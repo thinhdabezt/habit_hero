@@ -28,7 +28,7 @@ class HabitTile extends StatelessWidget {
                 : Icons.circle_outlined,
             color: habit.completedToday ? Colors.green : Colors.grey,
           ),
-          onPressed: () => provider.toggleComplete(habit),
+          onPressed: () => provider.toggleComplete(habit, context),
         ),
         onLongPress: () => provider.deleteHabit(habit),
       ),

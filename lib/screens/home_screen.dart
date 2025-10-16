@@ -1,5 +1,7 @@
 // lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
+import 'package:habit_hero/providers/hero_provider.dart';
+import 'package:habit_hero/widgets/hero_header.dart';
 import 'package:provider/provider.dart';
 import '../providers/habit_provider.dart';
 import '../widgets/habit_tile.dart';
@@ -11,6 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final habitProvider = Provider.of<HabitProvider>(context);
+    final heroProvider = Provider.of<HeroProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -18,21 +21,32 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.indigo,
       ),
       body: FutureBuilder(
-        future: habitProvider.loadHabits(),
+        future: Future.wait([
+          habitProvider.loadHabits(),
+          heroProvider.loadHero(),
+        ]),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
+
           final habits = habitProvider.habits;
-          if (habits.isEmpty) {
-            return const Center(child: Text('Chưa có thói quen nào 😄'));
-          }
-          return ListView.builder(
-            itemCount: habits.length,
-            itemBuilder: (context, index) {
-              final habit = habits[index];
-              return HabitTile(habit: habit);
-            },
+
+          return Column(
+            children: [
+              const HeroHeader(),
+              Expanded(
+                child: habits.isEmpty
+                    ? const Center(child: Text('Chưa có thói quen nào 😄'))
+                    : ListView.builder(
+                        itemCount: habits.length,
+                        itemBuilder: (context, index) {
+                          final habit = habits[index];
+                          return HabitTile(habit: habit);
+                        },
+                      ),
+              ),
+            ],
           );
         },
       ),
@@ -40,10 +54,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) => const AddHabitDialog(),
-          );
+          showDialog(context: context, builder: (_) => const AddHabitDialog());
         },
       ),
     );
