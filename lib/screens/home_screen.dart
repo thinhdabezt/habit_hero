@@ -15,41 +15,35 @@ class HomeScreen extends StatelessWidget {
     final habitProvider = Provider.of<HabitProvider>(context);
     final heroProvider = Provider.of<HeroProvider>(context, listen: false);
 
+    // Load data only once
+    if (!habitProvider.isLoaded || !heroProvider.isLoaded) {
+      habitProvider.loadHabits();
+      heroProvider.loadHero();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Habit Hero'),
         backgroundColor: Colors.indigo,
       ),
-      body: FutureBuilder(
-        future: Future.wait([
-          habitProvider.loadHabits(),
-          heroProvider.loadHero(),
-        ]),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final habits = habitProvider.habits;
-
-          return Column(
-            children: [
-              const HeroHeader(),
-              Expanded(
-                child: habits.isEmpty
-                    ? const Center(child: Text('Chưa có thói quen nào 😄'))
-                    : ListView.builder(
-                        itemCount: habits.length,
-                        itemBuilder: (context, index) {
-                          final habit = habits[index];
-                          return HabitTile(habit: habit);
-                        },
-                      ),
-              ),
-            ],
-          );
-        },
-      ),
+      body: (!habitProvider.isLoaded || !heroProvider.isLoaded)
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                const HeroHeader(),
+                Expanded(
+                  child: habitProvider.habits.isEmpty
+                      ? const Center(child: Text('Chưa có thói quen nào 😄'))
+                      : ListView.builder(
+                          itemCount: habitProvider.habits.length,
+                          itemBuilder: (context, index) {
+                            final habit = habitProvider.habits[index];
+                            return HabitTile(habit: habit);
+                          },
+                        ),
+                ),
+              ],
+            ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),

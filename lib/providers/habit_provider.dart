@@ -8,12 +8,16 @@ import '../models/habit.dart';
 class HabitProvider extends ChangeNotifier {
   List<Habit> _habits = [];
   Box<Habit>? _habitBox;
+  bool _isLoaded = false;
 
   List<Habit> get habits => _habits;
+  bool get isLoaded => _isLoaded;
 
   Future<void> loadHabits() async {
+    if (_isLoaded) return; // Prevent reloading
     _habitBox = await Hive.openBox<Habit>('habitsBox');
     _habits = _habitBox!.values.toList();
+    _isLoaded = true;
     notifyListeners();
   }
 
@@ -44,7 +48,7 @@ class HabitProvider extends ChangeNotifier {
       Provider.of<HeroProvider>(context, listen: false).addExp(10);
 
       if(habit.streak == 7){
-        Provider.of<HeroProvider>(context, listen: false).addBagde('7-Days Streak');
+        Provider.of<HeroProvider>(context, listen: false).addBadge('7-day Streak');
       }
     }
     await habit.save();
