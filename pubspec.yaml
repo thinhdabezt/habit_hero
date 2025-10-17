@@ -40,6 +40,10 @@ dependencies:
   change_notifier: ^0.28.0
   uuid: ^4.5.1
   lottie: ^3.3.2
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.0
+  cloud_firestore: ^5.4.4
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:

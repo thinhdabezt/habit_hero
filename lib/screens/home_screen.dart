@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
 
     // Load data only once
     if (!habitProvider.isLoaded || !heroProvider.isLoaded) {
-      habitProvider.loadHabits();
+      habitProvider.loadHabits(context); // pass context so provider can read AuthProvider
       heroProvider.loadHero();
     }
 

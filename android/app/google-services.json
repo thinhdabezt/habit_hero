@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "301244790323",
+    "project_id": "habit-hero-app-692d0",
+    "storage_bucket": "habit-hero-app-692d0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301244790323:android:2a7a711e65e2a3d937d546",
+        "android_client_info": {
+          "package_name": "com.example.habit_hero"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmTLDZKz6WWjyN_4HVfLJU9j1dfVpkoAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301244790323:android:800cabb71d67bfc837d546",
+        "android_client_info": {
+          "package_name": "com.thinhdabezt.habithero"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmTLDZKz6WWjyN_4HVfLJU9j1dfVpkoAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

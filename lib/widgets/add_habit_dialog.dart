@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../models/habit.dart';
 import '../providers/habit_provider.dart';
+import '../providers/auth_provider.dart';
 
 class AddHabitDialog extends StatefulWidget {
   const AddHabitDialog({super.key});
@@ -42,14 +43,21 @@ class _AddHabitDialogState extends State<AddHabitDialog> {
         ),
         ElevatedButton(
           child: const Text('Thêm'),
-          onPressed: () {
+          onPressed: () async {
             if (_nameController.text.isEmpty) return;
+            final uid = Provider.of<AuthProvider>(context, listen: false).user?.uid;
+            if (uid == null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('User not signed in')),
+              );
+              return;
+            }
             final newHabit = Habit(
               id: const Uuid().v4(),
               name: _nameController.text,
               description: _descController.text,
             );
-            provider.addHabit(newHabit);
+            await provider.addHabit(newHabit, uid: uid);
             Navigator.pop(context);
           },
         ),
